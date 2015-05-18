@@ -1,8 +1,11 @@
 
+
+
 module kungfu {
 	
+
 	
-	class Tween{
+	export class Tween{
 		
 		
 		constructor(){

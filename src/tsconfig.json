@@ -1,0 +1,20 @@
+{
+    "version": "1.5.0-alpha",
+    "compilerOptions": {
+        "target": "es3",
+        "out": "output.js",
+        "declaration": false,
+        "noImplicitAny": true,
+        "removeComments": false,
+        "noLib": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": false
+    },
+    "filesGlob": [
+        "./**/*.ts",
+        "!./node_modules/**/*.ts"
+    ],
+    "files": [
+        "./_references.ts"
+    ]
+}
