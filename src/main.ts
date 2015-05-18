@@ -1,18 +1,13 @@
 
 
 
-module kungfu {
-	
+module test {
 
-	
-	export class Tween{
-		
-		
-		constructor(){
-			
-		}
-		
+
+	function geeess() : void
+	{
+		console.log("heeeess!!");
 	}
-	
-	
+		
+
 }

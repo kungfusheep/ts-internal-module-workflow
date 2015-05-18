@@ -10,11 +10,8 @@
         "preserveConstEnums": true,
         "suppressImplicitAnyIndexErrors": false
     },
-    "filesGlob": [
-        "./**/*.ts",
-        "!./node_modules/**/*.ts"
-    ],
     "files": [
         "./_references.ts"
     ]
 }
+
