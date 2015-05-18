@@ -23,7 +23,7 @@
 	},
 	
 	// args is the HelloWorld program to compile.
-	"args": ["_references.ts"],
+	"args": ["_references.ts", "-out /out/module.js"],
 	
 	// use the standard tsc problem matcher to find compile problems
 	// in the output.
