@@ -6,17 +6,19 @@ var sourcemaps = require("gulp-sourcemaps")
 
 
 /// server
-browserSync.init({
-    server: {
-        baseDir: "./"
-    },
-    open: false
-});
 
+gulp.task("bsync", function(){
+
+	browserSync.init({
+	    server: {
+	        baseDir: "./"
+	    },
+	    open: false
+	});
+})
 
 
 var tsProject = ts.createProject("src/tsconfig.json", {});
-
 gulp.task("tsbuild", function() {
     var tsResult = gulp.src("src/_references.ts")
         .pipe(sourcemaps.init())
@@ -37,8 +39,8 @@ gulp.task("tsbuild", function() {
     ]);
 });
 
-gulp.task("default", function() {
+gulp.task("default", ["bsync"], function() {
 
-
-    gulp.watch(["src/**.ts", "./**.js", "./src/*.json"], ["tsbuild"]);
+    /// look out for ts changes, then kick off a build.
+    gulp.watch(["src/**.ts"], ["tsbuild"]);
 });

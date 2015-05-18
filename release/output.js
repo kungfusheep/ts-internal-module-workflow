@@ -1,8 +1,6 @@
 var test;
 (function (test) {
-    function geeess() {
-        console.log("heeeess!!");
-    }
+    console.log("entry!?");
 })(test || (test = {}));
 /// <reference path="main.ts" />
 
