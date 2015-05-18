@@ -1,0 +1,15 @@
+{
+  "name": "tween",
+  "version": "1.0.0",
+  "description": "a simple js tweening library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "@kungfusheep",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "3.8.11",
+    "gulp-typescript": "2.7.4"
+  }
+}
