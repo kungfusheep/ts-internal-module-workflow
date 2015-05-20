@@ -1,7 +1,7 @@
 {
     "version": "1.5.0-alpha",
     "compilerOptions": {
-        "target": "es3",
+        "target": "es5",
         "out": "output.js",
         "declaration": false,
         "noImplicitAny": true,
