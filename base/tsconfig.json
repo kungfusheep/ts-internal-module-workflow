@@ -6,11 +6,18 @@
         "noImplicitAny": true,
         "removeComments": false,
         "noLib": false,
+        "noEmitOnError": true,
         "preserveConstEnums": true,
         "suppressImplicitAnyIndexErrors": false
     },
+    "workflowFiles":[
+        
+        "!../typings/tsd.d.ts",
+        "ClassOne.ts",
+        "ClassTwo.ts",
+        "main.ts"
+    ],
     "files": [
         "./_references.ts"
     ]
 }
-
