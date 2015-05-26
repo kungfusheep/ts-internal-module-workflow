@@ -12,3 +12,4 @@ module testModule {
 	var two = new ns_testModule.ClassTwo();
 
 }
+

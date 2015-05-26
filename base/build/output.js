@@ -2,7 +2,7 @@ var ns_test;
 (function (ns_test) {
     var ClassOne = (function () {
         function ClassOne() {
-            console.log(1);
+            console.log("base!!");
         }
         ClassOne.prototype.testMethod = function () {
         };
@@ -32,4 +32,4 @@ var test;
     var two = new ns_test.ClassTwo();
 })(test || (test = {}));
 
-//# sourceMappingURL=base/release/output.js.map
+//# sourceMappingURL=base/build/output.js.map

@@ -7,7 +7,7 @@ module ns_test {
 
 		constructor(){
 
-			console.log(1);
+			console.log("base!!");
 		}
 
 

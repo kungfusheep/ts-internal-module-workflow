@@ -9,7 +9,7 @@ module ns_testModule {
 			
 			super();
 			
-			console.log(1);
+			console.log("TestModule!");
 		}
 
 

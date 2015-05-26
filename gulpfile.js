@@ -22,6 +22,32 @@ gulp.task("bsync", function () {
 });
 
 
+
+//========================================================================
+
+
+var verboseMode = process.argv.indexOf("--verbose") > -1;
+
+/**
+ * logs to the console if we're in --verbose mode
+ */
+function logVerbose(out){
+    if(verboseMode) console.log(out);
+}
+logVerbose("Verbose Mode.");
+
+
+
+
+//========================================================================
+
+var OUTPUT_FOLDER = "/build/",
+    OUTPUT_FILENAME = "output",
+    DTS_PATH = OUTPUT_FOLDER + OUTPUT_FILENAME + ".d.ts",
+    REFERENCES_PATH = "/_references.ts";
+    
+
+
 var buildOrder = [
   "base",
   "TestModule"  
@@ -36,7 +62,7 @@ function createTSTask(module_name) {
 
         var files = require("./" + module_name + "/tsconfig.json").workflowFiles.concat();
         
-        console.log("files--1 " + files);
+        logVerbose("files--1 " + files);
         
         var template = "/// <reference path=\"%1\" />\n";
         
@@ -52,16 +78,16 @@ function createTSTask(module_name) {
                 /// external module syntax detected, pull it apart.
                 filePath = filePath.substr(2, filePath.length-3);
                 
-                files[i] = "../" + filePath + "/release/output.d.ts";
-                filePath = "../" + filePath + "/_references.ts";   
+                files[i] = "../" + filePath + DTS_PATH;
+                filePath = "../" + filePath + REFERENCES_PATH;   
             }
 
             fileData += template.replace("%1", filePath.replace("./" + module_name + "/", ""));
             if(files[i]) files[i] = "./" + module_name + "/" + files[i];
         }
-        fs.writeFile(module_name + "/_references.ts", fileData);
+        fs.writeFile(module_name + REFERENCES_PATH, fileData);
         
-        console.log("files--2 " + files);
+        logVerbose("files--2 " + files);
 
         var tsResult = gulp.src(files)
             .pipe(sourcemaps.init())
@@ -70,18 +96,18 @@ function createTSTask(module_name) {
         return merge([
             tsResult.dts
                 .pipe(concat("output.d.ts"))
-                .pipe(gulp.dest("./" + module_name + "/release/")),
+                .pipe(gulp.dest("./" + module_name + OUTPUT_FOLDER)),
             tsResult.js
                 .pipe(concat("output.js"))
                 .pipe(cleants())
                 .pipe(sourcemaps.write(".", {
                     includeContent: false,
                     sourceMappingURLPrefix: function (file) {
-                        return module_name + "/release/";
+                        return module_name + OUTPUT_FOLDER;
                     },
                     sourceRoot: "../" + module_name + "/"
                 }))
-                .pipe(gulp.dest("./" + module_name + "/release/"))
+                .pipe(gulp.dest("./" + module_name + OUTPUT_FOLDER))
         ]);
     });
 }
@@ -91,15 +117,13 @@ function createTSWatch(module_name) {
     
     /// look out for ts changes, then kick off a build.
     gulp.watch(["./" + module_name + "/**.ts", 
-                "!./" + module_name + "/**.d.ts",
+                "!./" + module_name + "/**output.d.ts",
                 "!./" + module_name + "/_references.ts",                
-        ], [module_name]).
-    on("change", function(handle){
-         console.log(handle);
-    })
+        ], [module_name]);
 }
 
 
+/// default task
 gulp.task("default", [
     "bsync"
 ], 
@@ -116,8 +140,9 @@ function () {
 });
 
 
+/// support for dynamic creation of a task
 var arg = process.argv[2];
-if(arg) {
+if(arg && buildOrder.indexOf(arg) > -1) {
     
     createTSTask(arg);
 }

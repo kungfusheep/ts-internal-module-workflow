@@ -31,7 +31,7 @@ var ns_testModule;
         __extends(ClassOne, _super);
         function ClassOne() {
             _super.call(this);
-            console.log(1);
+            console.log("TestModule!");
         }
         ClassOne.prototype.testMethod = function () {
         };
@@ -47,4 +47,4 @@ var testModule;
     var two = new ns_testModule.ClassTwo();
 })(testModule || (testModule = {}));
 
-//# sourceMappingURL=TestModule/release/output.js.map
+//# sourceMappingURL=TestModule/build/output.js.map
