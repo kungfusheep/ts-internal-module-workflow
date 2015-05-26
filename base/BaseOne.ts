@@ -3,7 +3,7 @@
 module ns_test {
 
 
-	export class ClassOne {
+	export class BaseOne {
 
 		constructor(){
 

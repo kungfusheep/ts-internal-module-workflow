@@ -7,7 +7,8 @@ module test {
 
 
 
-	var one = new ns_test.ClassOne();
+	var one = new ns_test.BaseOne();
 	
-	var two = new ns_test.ClassTwo();
+	var two = new ns_test.BaseTwo();
 }
+

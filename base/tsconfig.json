@@ -13,8 +13,8 @@
     "workflowFiles":[
         
         "../typings/tsd.d.ts",
-        "ClassOne.ts",
-        "ClassTwo.ts", 
+        "BaseOne.ts",
+        "BaseTwo.ts", 
         "main.ts"
     ],
     "files": [

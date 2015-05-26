@@ -5,10 +5,11 @@ module ns_test {
 	/**
 	 * ClassTwo
 	 */
-	export class ClassTwo {
+	export class BaseTwo {
 		constructor() {
 			//
 		}
 	}
+	
 	
 }
