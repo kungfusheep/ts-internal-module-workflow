@@ -12,9 +12,10 @@
     },
     "workflowFiles":[
         
-        "../typings/tsd.d.ts",
-        "ClassOne.ts",
+        "!{base}",
+        
         "ClassTwo.ts", 
+        "ClassOne.ts",
         "main.ts"
     ],
     "files": [
