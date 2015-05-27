@@ -1,5 +1,5 @@
 declare module ns_test {
-    class ClassOne {
+    class BaseOne {
         constructor();
         testMethod(): void;
     }
@@ -9,10 +9,7 @@ declare module ns_test {
     /**
      * ClassTwo
      */
-    class ClassTwo {
+    class BaseTwo {
         constructor();
     }
-}
-
-declare module test {
 }

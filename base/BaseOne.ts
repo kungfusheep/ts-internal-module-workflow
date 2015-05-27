@@ -13,7 +13,7 @@ module ns_test {
 
 		public testMethod() : void
 		{
-			
+		//
 		}
 	}
 }

@@ -1,20 +1,26 @@
 
 
+function log(a:any, b:any, c:any){
+	
+}
+
+
+
+
 module ns_testModule {
 
 
-	export class ClassOne extends ns_test.ClassOne {
+	export class ClassOne extends ns_test.BaseOne {
 
 		constructor(){
 			
 			super();
 			
-			console.log("TestModule!");
 		}
-
 
 		public testMethod() : void
 		{
+			console.log("TestModule!");
 			
 		}
 	}

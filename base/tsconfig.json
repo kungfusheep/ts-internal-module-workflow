@@ -12,10 +12,8 @@
     },
     "workflowFiles":[
         
-        "../typings/tsd.d.ts",
         "BaseOne.ts",
-        "BaseTwo.ts", 
-        "main.ts"
+        "BaseTwo.ts"
     ],
     "files": [
         "./_references.ts"

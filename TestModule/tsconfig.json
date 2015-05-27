@@ -7,15 +7,15 @@
         "removeComments": false,
         "noLib": false,
         "noEmitOnError": true,
-        "preserveConstEnums": true,
+        "preserveConstEnums": false,
         "suppressImplicitAnyIndexErrors": false
     },
     "workflowFiles":[
         
         "!{base}",
         
-        "ClassTwo.ts", 
         "ClassOne.ts",
+        "ClassTwo.ts", 
         "main.ts"
     ],
     "files": [

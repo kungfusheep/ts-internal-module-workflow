@@ -8,14 +8,16 @@ var merge = require("merge2");
 var sourcemaps = require("gulp-sourcemaps");
 var concat = require("gulp-concat");
 var cleants = require("gulp-clean-ts-extends");
+var uglify = require("gulp-uglify");
 var fs = require("fs");
+var gulpif = require("gulp-if");
 
 /// server
 gulp.task("bsync", function () {
 
     browserSync.init({
         server: {
-            baseDir: "./base"
+            baseDir: "./"
         },
         open: false
     });
@@ -27,6 +29,7 @@ gulp.task("bsync", function () {
 
 
 var verboseMode = process.argv.indexOf("--verbose") > -1;
+var releaseMode = process.argv.indexOf("--release") > -1;
 
 /**
  * logs to the console if we're in --verbose mode
@@ -41,10 +44,7 @@ logVerbose("Verbose Mode.");
 
 //========================================================================
 
-var OUTPUT_FOLDER = "/build/",
-    OUTPUT_FILENAME = "output",
-    DTS_PATH = OUTPUT_FOLDER + OUTPUT_FILENAME + ".d.ts",
-    REFERENCES_PATH = "/_references.ts";
+var OUTPUT_FOLDER = "/build/";
     
 
 
@@ -64,7 +64,11 @@ function createTSTask(module_name) {
         
         logVerbose("files--1 " + files);
         
+        
+        var referencesPath = "/_references.ts";
+        var dtsFileName = module_name + ".d.ts";
         var template = "/// <reference path=\"%1\" />\n";
+        
         
         var fileData = "", filePath = "";
         for (var i = 0; i < files.length; i++) {
@@ -78,14 +82,16 @@ function createTSTask(module_name) {
                 /// external module syntax detected, pull it apart.
                 filePath = filePath.substr(2, filePath.length-3);
                 
-                files[i] = "../" + filePath + DTS_PATH;
-                filePath = "../" + filePath + REFERENCES_PATH;   
+                /// pass this to compiler
+                files[i] = "../" + filePath + OUTPUT_FOLDER + filePath + ".d.ts";
+                /// and this to _references.ts
+                filePath = "../" + filePath + referencesPath;   
             }
 
             fileData += template.replace("%1", filePath.replace("./" + module_name + "/", ""));
             if(files[i]) files[i] = "./" + module_name + "/" + files[i];
         }
-        fs.writeFile(module_name + REFERENCES_PATH, fileData);
+        fs.writeFile(module_name + referencesPath, fileData);
         
         logVerbose("files--2 " + files);
 
@@ -95,18 +101,19 @@ function createTSTask(module_name) {
 
         return merge([
             tsResult.dts
-                .pipe(concat("output.d.ts"))
+                .pipe(concat(dtsFileName))
                 .pipe(gulp.dest("./" + module_name + OUTPUT_FOLDER)),
             tsResult.js
-                .pipe(concat("output.js"))
+                .pipe(concat(module_name + ".js"))
                 .pipe(cleants())
-                .pipe(sourcemaps.write(".", {
+                // if we're in release mode, uglify, else sourcemaps
+                .pipe( gulpif(releaseMode, uglify(),  sourcemaps.write(".", {
                     includeContent: false,
                     sourceMappingURLPrefix: function (file) {
-                        return module_name + OUTPUT_FOLDER;
+                        return "/" + module_name + OUTPUT_FOLDER;
                     },
-                    sourceRoot: "../" + module_name + "/"
-                }))
+                    sourceRoot: "/" + module_name + "/"
+                })))
                 .pipe(gulp.dest("./" + module_name + OUTPUT_FOLDER))
         ]);
     });

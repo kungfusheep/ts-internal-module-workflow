@@ -1,4 +1,2 @@
-/// <reference path="../typings/tsd.d.ts" />
-/// <reference path="ClassOne.ts" />
-/// <reference path="ClassTwo.ts" />
-/// <reference path="main.ts" />
+/// <reference path="BaseOne.ts" />
+/// <reference path="BaseTwo.ts" />
