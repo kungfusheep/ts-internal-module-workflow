@@ -45,13 +45,13 @@ logVerbose("Verbose Mode.");
 //========================================================================
 
 var OUTPUT_FOLDER = "/build/";
-    
 
 
 var buildOrder = [
   "base",
   "TestModule"  
 ];
+
 
 
 function createTSTask(module_name) {
@@ -62,11 +62,10 @@ function createTSTask(module_name) {
 
         var files = require("./" + module_name + "/tsconfig.json").workflowFiles.concat();
         
-        logVerbose("files--1 " + files);
+        logVerbose("files list: " + files);
         
         
         var referencesPath = "/_references.ts";
-        var dtsFileName = module_name + ".d.ts";
         var template = "/// <reference path=\"%1\" />\n";
         
         
@@ -93,7 +92,7 @@ function createTSTask(module_name) {
         }
         fs.writeFile(module_name + referencesPath, fileData);
         
-        logVerbose("files--2 " + files);
+        logVerbose("files to compiler: " + files);
 
         var tsResult = gulp.src(files)
             .pipe(sourcemaps.init())
@@ -101,19 +100,22 @@ function createTSTask(module_name) {
 
         return merge([
             tsResult.dts
-                .pipe(concat(dtsFileName))
+                .pipe(concat(module_name + ".d.ts"))
                 .pipe(gulp.dest("./" + module_name + OUTPUT_FOLDER)),
             tsResult.js
                 .pipe(concat(module_name + ".js"))
                 .pipe(cleants())
                 // if we're in release mode, uglify, else sourcemaps
-                .pipe( gulpif(releaseMode, uglify(),  sourcemaps.write(".", {
-                    includeContent: false,
-                    sourceMappingURLPrefix: function (file) {
-                        return "/" + module_name + OUTPUT_FOLDER;
-                    },
-                    sourceRoot: "/" + module_name + "/"
-                })))
+                .pipe( gulpif(releaseMode, 
+                    uglify(),  
+                    sourcemaps.write(".", {
+                        includeContent: false,
+                        sourceMappingURLPrefix: function (file) {
+                            return "/" + module_name + OUTPUT_FOLDER;
+                        },
+                        sourceRoot: "/" + module_name + "/"
+                    })
+                ))
                 .pipe(gulp.dest("./" + module_name + OUTPUT_FOLDER))
         ]);
     });
