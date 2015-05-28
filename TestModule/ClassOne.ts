@@ -21,7 +21,7 @@ module ns_testModule {
 		public testMethod() : void
 		{
 			console.log("TestModule!");
-			
+			super.testMethod();
 		}
 	}
 }
