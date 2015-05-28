@@ -47,3 +47,7 @@ At the moment there are only a couple of custom options
 - Have a tidy up in the gulpfile.
 - Finish this README...!
 
+
+## Contributing
+
+If you like the idea of this and want to contribute to making it better, please do give me a shout.
