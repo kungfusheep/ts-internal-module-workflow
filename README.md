@@ -9,7 +9,7 @@ By using adopting this workflow you get;
 - The concept of a TypeScript library project! (see 'Usage' below)
 - `gulp-typescript`'s incremental builds 
 - Generic watch/build tasks for all projects. 
-- Project build-order. (- 'build all' not implemented in this commit) 
+- Project build-order - `gulp all`. 
 - `BrowserSync` set up and ready. 
 - SourceMaps when not in release mode. 
 - Minification in release mode using `UglifyJS`. 
@@ -34,18 +34,13 @@ Linking to other projects is done using the `!{PROJECT_NAME}` syntax. This gives
 
 This esentially gives us the concept of a TypeScript library project. It also makes no assertions on how your codebase loads its code in production, that's left up to your preference.
  
+
 ## Options
 
 At the moment there are only a couple of custom options
 
 - `--release` Minifies the build output and turns off sourcemaps. 
 - `--verbose` Turns on a bit of extra logging. 
-
-
-## TODO
-
-- Have a tidy up in the gulpfile.
-- Finish this README...!
 
 
 ## Contributing

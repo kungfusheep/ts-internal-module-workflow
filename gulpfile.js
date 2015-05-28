@@ -12,18 +12,6 @@ var uglify = require("gulp-uglify");
 var fs = require("fs");
 var gulpif = require("gulp-if");
 
-/// server
-gulp.task("bsync", function () {
-
-    browserSync.init({
-        server: {
-            baseDir: "./"
-        },
-        open: false
-    });
-});
-
-
 
 //========================================================================
 
@@ -41,12 +29,14 @@ logVerbose("Verbose Mode.");
 
 
 
-
 //========================================================================
 
 var OUTPUT_FOLDER = "/build/";
+var REFERENCES_TS = "/_references.ts";
+var TSCONFIG = "/tsconfig.json";
 
 
+/// projects need to appear in here to have tasks created. 'all' is executed in this order.
 var buildOrder = [
   "base",
   "TestModule"  
@@ -54,54 +44,61 @@ var buildOrder = [
 
 
 
+/**
+ * Generate a TypeScript build task.
+ */
 function createTSTask(module_name) {
     
     
-    var tsProject = ts.createProject(module_name + "/tsconfig.json", {/* overrides */});
+    var tsProject = ts.createProject(module_name + TSCONFIG, {/* overrides */});
     gulp.task(module_name, function () {
 
-        var files = require("./" + module_name + "/tsconfig.json").workflowFiles.concat();
+        var files = require("./" + module_name + TSCONFIG).workflowFiles.concat();
         
+        ///
         logVerbose("files list: " + files);
         
         
-        var referencesPath = "/_references.ts";
-        var template = "/// <reference path=\"%1\" />\n";
-        
-        
-        var fileData = "", filePath = "";
+        /// -generate _references from `workflowFiles`
+        /// -replace any project tokens with _references & the d.ts file.  
+        var fileData = "", 
+            filePath, 
+            projectName;
         for (var i = 0; i < files.length; i++) {
 
             filePath = files[i];
 
-            /// if the first character is "!" then we"ll strip it-
-            ///  -add it to _references.ts but not pass it to the compiler.
+            /// if the first character is "!" then we know this is a project reference.
             if (filePath.charAt(0) == "!") {
 
                 /// external module syntax detected, pull it apart.
-                filePath = filePath.substr(2, filePath.length-3);
+                projectName = filePath.substr(2, filePath.length-3);
                 
-                /// pass this to compiler
-                files[i] = "../" + filePath + OUTPUT_FOLDER + filePath + ".d.ts";
+                /// pass this to compiler by placing it back into the list
+                files[i] = "../" + projectName + OUTPUT_FOLDER + projectName + ".d.ts";
                 /// and this to _references.ts
-                filePath = "../" + filePath + referencesPath;   
+                filePath = "../" + filePath + REFERENCES_TS;   
             }
 
-            fileData += template.replace("%1", filePath.replace("./" + module_name + "/", ""));
+            fileData += "/// <reference path=\"" + filePath.replace("./" + module_name + "/", "") +"\" />\n";
             if(files[i]) files[i] = "./" + module_name + "/" + files[i];
         }
-        fs.writeFile(module_name + referencesPath, fileData);
-        
+        fs.writeFile(module_name + REFERENCES_TS, fileData);
+        ///
         logVerbose("files to compiler: " + files);
 
+
+        /// the ts build
         var tsResult = gulp.src(files)
             .pipe(sourcemaps.init())
             .pipe(ts(tsProject));
-
+            
+        /// process the output.
         return merge([
             tsResult.dts
                 .pipe(concat(module_name + ".d.ts"))
                 .pipe(gulp.dest("./" + module_name + OUTPUT_FOLDER)),
+                
             tsResult.js
                 .pipe(concat(module_name + ".js"))
                 .pipe(cleants())
@@ -122,6 +119,9 @@ function createTSTask(module_name) {
 }
 
 
+/**
+ * Generate a TS project watch task.
+ */
 function createTSWatch(module_name) {
     
     /// look out for ts changes, then kick off a build.
@@ -130,6 +130,19 @@ function createTSWatch(module_name) {
                 "!./" + module_name + "/_references.ts",                
         ], [module_name]);
 }
+
+
+
+/// server
+gulp.task("bsync", function () {
+
+    browserSync.init({
+        server: {
+            baseDir: "./"
+        },
+        open: false
+    });
+});
 
 
 /// default task
@@ -146,6 +159,20 @@ function () {
         createTSTask(element);
         createTSWatch(element);
     }
+});
+
+
+gulp.task("all", function(){
+    var runSequence = require("run-sequence");
+    
+    /// create build and watch tasks for all in the build order list.
+    for (var i = 0; i < buildOrder.length; i++) {
+        var element = buildOrder[i];
+        
+        createTSTask(element);
+    }
+    
+    runSequence(buildOrder);
 });
 
 
