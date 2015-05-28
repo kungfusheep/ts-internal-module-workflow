@@ -1,1 +1,0 @@
-var ns_test;!function(t){var n=function(){function t(){console.log("base!!")}return t.prototype.testMethod=function(){},t}();t.BaseOne=n}(ns_test||(ns_test={}));var ns_test;!function(t){var n=function(){function t(){}return t}();t.BaseTwo=n}(ns_test||(ns_test={}));
