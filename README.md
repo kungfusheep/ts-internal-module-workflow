@@ -13,7 +13,7 @@ By using adopting this workflow you get;
 - `BrowserSync` set up and ready. 
 - SourceMaps when not in release mode. 
 - Minification in release mode using `UglifyJS`. 
-
+- Generation of `_references.ts`. 
 
 ## Getting Started
 
