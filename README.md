@@ -17,7 +17,7 @@ By using adopting this workflow you get;
 
 ## Getting Started
 
-	git clone git://github.com/kungfusheep/ts-internal-module-workflow.git
+	git clone http://github.com/kungfusheep/ts-internal-module-workflow
 	cd ts-internal-module-workflow
 	npm install
 	
