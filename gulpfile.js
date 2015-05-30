@@ -77,7 +77,7 @@ function createTSTask(module_name) {
                 /// pass this to compiler by placing it back into the list
                 files[i] = "../" + projectName + OUTPUT_FOLDER + projectName + ".d.ts";
                 /// and this to _references.ts
-                filePath = "../" + filePath + REFERENCES_TS;   
+                filePath = "../" + projectName + REFERENCES_TS;
             }
 
             fileData += "/// <reference path=\"" + filePath.replace("./" + module_name + "/", "") +"\" />\n";
