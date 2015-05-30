@@ -126,7 +126,7 @@ function createTSWatch(module_name) {
     
     /// look out for ts changes, then kick off a build.
     gulp.watch(["./" + module_name + "/**.ts", 
-                "!./" + module_name + "/**output.d.ts",
+                "!./" + module_name + "/**" + module_name + ".d.ts",
                 "!./" + module_name + "/_references.ts",                
         ], [module_name]);
 }
